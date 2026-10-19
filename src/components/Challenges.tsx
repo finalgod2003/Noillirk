@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import type { GameConfig } from "../types";
+import { PixelBadge } from "./PixelWorld";
 import { themes } from "../data/themes";
 import { formatAltitude, getDailyKey, loadRecord } from "../lib/game";
 import { currentStreak, loadProfile } from "../lib/retention";
@@ -34,7 +35,7 @@ export function Challenges({ onStart, onRecords }: { onStart: (config: GameConfi
       <div className="retention-heading theme-heading"><div><span className="guide-kicker">ORIGINAL THEME PACKS</span><h2>Pick a little world to climb.</h2><p>7 original prompts · 15 seconds each · up to 7,000 m. Fixed boards you can share with friends.</p></div></div>
       <div className="theme-grid">
         {themes.map((theme, index) => <article className={`theme-card theme-${theme.id}`} key={theme.id}>
-          <span className="guide-kicker">THEME 0{index + 1}</span><h3>{theme.name}</h3><p>{theme.description}</p>
+          <PixelBadge kind={index === 0 ? "star" : index === 1 ? "tree" : "house"} /><span className="guide-kicker">THEME 0{index + 1}</span><h3>{theme.name}</h3><p>{theme.description}</p>
           <span className="record-line">{Object.hasOwn(profile.themeBests, theme.id) ? `Your best: ${formatAltitude(profile.themeBests[theme.id] * 10)}` : "Your first climb awaits"}</span>
           <button className="mode-play" onClick={() => onStart({ mode: "climb", variant: "classic", theme: theme.id })}>Play {theme.name}<ArrowRight size={16} /></button>
         </article>)}

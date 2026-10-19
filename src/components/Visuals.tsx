@@ -1,6 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
-import { Cloud, Sparkles, Wind } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import type { RoundResult } from "../types";
+import { PixelLandscape, PixelRider } from "./PixelWorld";
 
 export function CrowdField({
   crowd,
@@ -35,6 +36,7 @@ export function CrowdField({
 
   return (
     <div className="crowd-field" key={pulseKey}>
+      <PixelLandscape />
       <div className="crowd-grid" aria-hidden="true" />
       {reveal?.topAnswers.map((answer, index) => (
         <div className={`crowd-label crowd-label-${index + 1}`} key={answer}>
@@ -83,19 +85,13 @@ export function ClimbField({
 }) {
   const progress = Math.min(1, points / 700);
   const altitude = points * 10;
+  const stage = altitude >= 4500 ? "space" : altitude >= 2000 ? "clouds" : "forest";
+  const stageName = stage === "space" ? "03 · STAR EXPLORER" : stage === "clouds" ? "02 · CLOUD CRUISER" : "01 · FOREST EXPLORER";
 
   return (
-    <div className="climb-field" key={pulseKey}>
-      <div className="climb-sky" aria-hidden="true">
-        <span className="star star-1" />
-        <span className="star star-2" />
-        <span className="star star-3" />
-        <span className="star star-4" />
-        <Cloud className="sky-cloud cloud-1" />
-        <Cloud className="sky-cloud cloud-2" />
-        <Cloud className="sky-cloud cloud-3" />
-        <Wind className="sky-wind" />
-      </div>
+    <div className={`climb-field stage-${stage}`} data-round={pulseKey}>
+      <PixelLandscape variant={stage} />
+      <div className="stage-badge" role="status">{stageName}</div>
 
       <div className="balloon-rack" aria-label={`${balloons} balloons left`}>
         {[0, 1, 2].map((index) => (
@@ -114,13 +110,7 @@ export function ClimbField({
       <div className="climb-track">
         <div className="climb-fill" style={{ height: `${progress * 100}%` }} />
         <div className="climb-carriage" style={{ bottom: `calc(${progress * 100}% - 34px)` }}>
-          <span className="carriage-glow" />
-          <div className="carriage-body">
-            <span className="carriage-eye eye-left" />
-            <span className="carriage-eye eye-right" />
-            <span className="carriage-smile" />
-          </div>
-          <span className="carriage-tail" />
+          <PixelRider />
         </div>
       </div>
 

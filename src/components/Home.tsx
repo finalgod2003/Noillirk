@@ -14,44 +14,13 @@ import type { GameConfig } from "../types";
 import { loadRecord } from "../lib/game";
 import { currentStreak } from "../lib/retention";
 import { Challenges } from "./Challenges";
+import { PixelLandscape, PixelRider, PixelBadge } from "./PixelWorld";
 
 function ModeStat({ value, label }: { value: string; label: string }) {
   return (
     <div className="mode-stat">
       <strong>{value}</strong>
       <span>{label}</span>
-    </div>
-  );
-}
-
-function CrowdDial() {
-  return (
-    <div className="hero-dial" aria-hidden="true">
-      <div className="hero-dial-ring ring-a" />
-      <div className="hero-dial-ring ring-b" />
-      <div className="hero-dial-ring ring-c" />
-      {Array.from({ length: 48 }, (_, index) => {
-        const angle = (index / 48) * Math.PI * 2;
-        const radius = 36 + (index % 4) * 5;
-        return (
-          <span
-            className={`hero-dial-dot tone-${index % 5}`}
-            key={index}
-            style={{
-              left: `${50 + Math.cos(angle) * radius}%`,
-              top: `${50 + Math.sin(angle) * radius}%`,
-              animationDelay: `${(index % 12) * 80}ms`
-            }}
-          />
-        );
-      })}
-      <div className="hero-dial-center">
-        <span>YOU</span>
-        <strong>100</strong>
-        <em>possible instincts</em>
-      </div>
-      <span className="hero-dial-note note-a">say the obvious</span>
-      <span className="hero-dial-note note-b">move the room</span>
     </div>
   );
 }
@@ -93,8 +62,8 @@ export function Home({
         </a>
         <div className="header-live">
           <span className="header-live-dot" />
-          <span>Live arena</span>
-          <strong>NOI / 01</strong>
+          <span>Adventure awaits</span>
+          <strong>LEVEL 01</strong>
         </div>
         <nav className="header-nav" aria-label="Primary navigation">
           <button
@@ -114,115 +83,37 @@ export function Home({
       </header>
 
       <main>
-        <section className="hero" id="top">
-          <div className="hero-copy">
-            <motion.div
-              className="eyebrow"
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55 }}
-            >
-              <span className="eyebrow-signal" />
-              Free browser game · Fan-made edition
-            </motion.div>
-            <motion.h1
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.08 }}
-            >
-              <span className="hero-brandline">Noillirk</span>{" "}
-              <span className="hero-word">Guess What Most People Would Say.</span>
-            </motion.h1>
-            <motion.p
-              className="hero-lede"
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.16 }}
-            >
-              Guess the most popular answer. Play Crowd 100 free online: 10 prompts,
-              30 seconds each. No sign-up or download.
-            </motion.p>
-            <div className="hero-actions">
-              <button
-                className="primary-button"
-                onClick={() => onStart({ mode: "crowd", variant: "daily" })}
-              >
-                Play Now
-                <ArrowRight size={18} />
-              </button>
-              <button
-                className="text-button"
-                onClick={() => onStart({ mode: "climb", variant: "classic" })}
-              >
-                Try Sky Climb · 7 prompts
-                <ArrowUpRight size={17} />
-              </button>
+        <section className="sky-hero" id="top">
+          <PixelLandscape />
+          <div className="hero">
+            <div className="hero-copy">
+              <div className="eyebrow"><span className="eyebrow-signal" />A little guess. A big adventure.</div>
+              <h1><span className="hero-brandline">Noillirk</span><span className="hero-word">Follow your instinct.<br />Find your people.</span></h1>
+              <p className="hero-lede">Big skies. Quick guesses. Good company. Play free word games where the most popular answer takes you further.</p>
+              <div className="hero-actions">
+                <button className="primary-button" onClick={() => onStart({ mode: "crowd", variant: "daily" })}>Let's play<ArrowRight size={19} /></button>
+                <a className="hero-explore" href="#play">Choose your adventure <span>↓</span></a>
+              </div>
+              <div className="hero-meta"><span>No sign-up</span><span>Free to play</span><span>3–5 minute adventures</span></div>
             </div>
-            <div className="hero-meta">
-              <span>No sign-up</span>
-              <span>3–5 min</span>
-              <span>Desktop + mobile browser</span>
+            <div className="hero-adventure" aria-label="A pixel adventurer floats above the forest with a red balloon">
+              <div className="adventure-hud"><span>SKY CLIMB</span><strong>READY FOR LIFT-OFF?</strong><span className="hud-hearts" aria-hidden="true">♥ ♥ ♥</span></div>
+              <PixelRider />
+              <span className="sky-spark spark-one" aria-hidden="true">✦</span><span className="sky-spark spark-two" aria-hidden="true">✦</span>
+              <div className="adventure-caption"><span>↑ NEXT STOP: THE CLOUDS</span><button onClick={() => onStart({ mode: "climb", variant: "classic" })}>Try Sky Climb<ArrowUpRight size={16} /></button></div>
             </div>
           </div>
-          <motion.div
-            className="hero-visual"
-            initial={false}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="broadcast-frame">
-              <div className="broadcast-bar">
-                <span className="broadcast-live">
-                  <i />
-                  On air
-                </span>
-                <span>Instinct cam / 01</span>
-                <span className="broadcast-time">00:30</span>
-              </div>
-              <CrowdDial />
-              <div className="broadcast-lower-third">
-                <div>
-                  <span>The room right now</span>
-                  <strong>
-                    100 <small>instincts</small>
-                  </strong>
-                </div>
-                <span className="broadcast-tag">Crowd 100</span>
-              </div>
-            </div>
-            <div className="hero-floating-card">
-              <span>Mode 01</span>
-              <strong>10 rounds</strong>
-            </div>
-          </motion.div>
+          <div className="world-sign"><span className="world-sign-dot" />WORLD 01 · THE BEGINNING</div>
         </section>
-
-        <div className="broadcast-ticker" aria-hidden="true">
-          <div className="ticker-track">
-            <span>Think fast</span>
-            <span>Crowd 100</span>
-            <span>Sky Climb</span>
-            <span>No sign-up</span>
-            <span>Same room energy</span>
-            <span>Trust the obvious</span>
-            <span>Think fast</span>
-            <span>Crowd 100</span>
-            <span>Sky Climb</span>
-            <span>No sign-up</span>
-            <span>Same room energy</span>
-            <span>Trust the obvious</span>
-          </div>
-        </div>
-
-        <Challenges onStart={onStart} onRecords={onRecords} />
+        <div className="adventure-strip"><span><PixelBadge kind="star" />A little play goes a long way.</span><span>Two ways to play. One good instinct.</span><a href="/how-to-play/">New here? How to play <ArrowUpRight size={14} /></a></div>
 
         <section className="mode-section" id="play">
           <div className="section-heading">
             <div>
               <span className="section-number">01</span>
-              <p>Crowd 100 or Sky Climb</p>
+              <p>CHOOSE YOUR ADVENTURE</p>
             </div>
-            <h2>Play Noillirk: two game modes.</h2>
+            <h2>Where will your instinct take you?</h2>
           </div>
 
           <div className="mode-grid">
@@ -240,9 +131,10 @@ export function Home({
                 <span className="mode-icon">
                   <Users size={22} />
                 </span>
-                <span className="mode-tag">THE TABLE</span>
+                <span className="mode-tag">BETTER TOGETHER</span>
                 <span className="mode-index">A / 01</span>
               </div>
+              <div className="mode-art" aria-hidden="true"><PixelLandscape /><PixelBadge kind="house" /></div>
               <div className="mode-copy">
                 <h3><a href="/modes/crowd-100/">Crowd 100</a></h3>
                 <p>
@@ -291,9 +183,10 @@ export function Home({
                 <span className="mode-icon">
                   <Wind size={22} />
                 </span>
-                <span className="mode-tag">THE CLIMB</span>
+                <span className="mode-tag">THE SKY IS THE LIMIT</span>
                 <span className="mode-index">B / 02</span>
               </div>
+              <div className="mode-art mode-art-sky" aria-hidden="true"><PixelLandscape variant="clouds" /><PixelRider /></div>
               <div className="mode-copy">
                 <h3><a href="/modes/sky-climb/">Sky Climb</a></h3>
                 <p>
@@ -357,11 +250,13 @@ export function Home({
           </motion.div>
         </section>
 
+        <Challenges onStart={onStart} onRecords={onRecords} />
+
         <section className="guide-section" id="guide">
           <div className="section-heading">
             <div>
               <span className="section-number">02</span>
-              <p>Direct answers, not lore</p>
+              <p>YOUR ADVENTURE GUIDE</p>
             </div>
             <h2>What is Noillirk?</h2>
           </div>
