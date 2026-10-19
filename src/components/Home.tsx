@@ -105,7 +105,7 @@ export function Home({
           </button>
           <a href="/how-to-play/">Guide</a>
           <a href="#challenges">Challenges</a>
-          <a href="/rules/">Rules</a>
+          <a href="/game-rules/">Rules</a>
           <button className="nav-room" onClick={onOpenRoom}>
             <Radio size={14} />
             Room
@@ -616,7 +616,10 @@ export function Home({
         <div className="footer-links">
           <a href="#play">Play</a>
           <a href="/how-to-play/">How to play</a>
-          <a href="/rules/">Rules</a>
+          <a href="/daily/">Daily challenge</a>
+          <a href="/tips/">Tips</a>
+          <a href="/games-like-noillirk/">Games like Noillirk</a>
+          <a href="/game-rules/">Rules</a>
           <a href="/modes/crowd-100/">Crowd 100</a>
           <a href="/modes/sky-climb/">Sky Climb</a>
           <button onClick={onRecords}>My records</button>

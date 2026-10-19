@@ -18,6 +18,7 @@ export function ContentPage({ page }: { page: ContentPageData }) {
             <section key={section.heading}>
               <h2>{section.heading}</h2>
               {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              {section.links?.map((link) => <p key={link.href}><a href={link.href}>{link.label}</a></p>)}
             </section>
           ))}
         </article>

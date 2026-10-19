@@ -4,11 +4,54 @@ export interface ContentPageData {
   description: string;
   heading: string;
   intro: string;
-  sections: { heading: string; paragraphs: string[] }[];
+  sections: { heading: string; paragraphs: string[]; links?: { label: string; href: string }[] }[];
   mode: "crowd" | "climb";
 }
 
 export const contentPages: ContentPageData[] = [
+  {
+    path: "/daily/",
+    title: "Noillirk Daily – Play Today's Crowd 100 Challenge",
+    description: "Play the Noillirk daily challenge: 10 prompts, 30 seconds per answer, and one recorded daily score. Learn reset times, streaks, replays, and sharing.",
+    heading: "Noillirk daily challenge",
+    intro: "Make a daily habit of guessing popular answers. This fan-made edition's daily challenge is a 10-prompt Crowd 100 run, with a date-based question sequence and 30 seconds to submit each answer. Select Play Crowd 100 to start today's challenge.",
+    mode: "crowd",
+    sections: [
+      { heading: "What changes each day?", paragraphs: ["The game selects a question sequence from its curated bank using the date on your device. Starting the same date again uses the same sequence in this edition. The bank is finite, so individual prompts can return on other days; this is not a promise of ten newly written questions every day.", "Today's challenge changes at local midnight. A run already in progress keeps the date it started with, even if you finish after midnight. Players in different time zones may be playing different dates."] },
+      { heading: "Your first completed run counts", paragraphs: ["Finish all ten prompts to record your daily score. Your first eligible completed run for the date counts toward your daily record and streak. Completing consecutive dates extends the streak; replaying a completed date is practice and does not replace its recorded score.", "A perfect run earns 2,600 points. The crowd reaches its visual target of 100 people at 2,500 points, while the score can keep increasing. Passes and timeouts earn zero but still let you complete the challenge."], links: [{ label: "See the scoring rules", href: "/game-rules/" }] },
+      { heading: "Replay, review, and share", paragraphs: ["After the run, review your answers alongside the top answer for each prompt. Play again to practice the same date. Sharing your result produces colored tiles without answer text and a link to the same challenge, so friends can compare scores without seeing your answers first.", "An older date opened through a shared link is practice. For a longer session after today's challenge, choose Unlimited on the homepage: each run contains 20 prompts."], links: [{ label: "Try a 20-prompt Unlimited run", href: "/?play=crowd&variant=unlimited" }] },
+      { heading: "Where are my daily results saved?", paragraphs: ["My records on the homepage shows your recent runs. Records are stored in this browser on this device, without an account or cross-device synchronization. Clearing site data or switching browsers can remove or separate your history. Browser storage must be available for saving to work.", "This is an independent fan-made challenge. Its prompts, rankings, scores, and daily sequence are not the original Noillirk's daily board."] }
+    ]
+  },
+  {
+    path: "/tips/",
+    title: "Noillirk Tips – Better Guesses, Timing & Score Strategy",
+    description: "Improve your Noillirk guesses with practical tips for common answers, clean submissions, Crowd 100 multipliers, and Sky Climb's short timer.",
+    heading: "Noillirk tips for better guesses",
+    intro: "A strong Noillirk answer fits the prompt and lands high on this edition's curated answer list. These tips help you make clearer choices under the timer; they cannot guarantee a top-ranked answer.",
+    mode: "crowd",
+    sections: [
+      { heading: "1. Read the category before choosing", paragraphs: ["Identify what kind of answer the prompt requests: an object, place, activity, or something else. For a fruit prompt, a familiar fruit is a more useful starting point than a meal containing fruit. Avoid spending the whole timer searching for an unusual answer: this game rewards higher-ranked familiar responses.", "Popularity here is an editorial estimate, not a live poll. An answer that seems obvious to you may be ranked differently or missing from the list."] },
+      { heading: "2. Submit one clear answer", paragraphs: ["Type the answer itself. For a hypothetical fruit prompt, enter apple rather than apple, banana, or orange. A list is evaluated as one submission; it does not give you several chances.", "Capitalization and extra spaces are normalized, and selected aliases and small spelling variations are accepted. Still, use a complete, correctly spelled word when you can. The matcher does not understand every synonym or explanatory sentence."] },
+      { heading: "3. Leave time to press Submit", paragraphs: ["Crowd 100 allows 30 seconds per prompt; Sky Climb allows 15. Choose a plausible answer early enough to type and submit before the deadline. An empty submission does not stop the clock, and switching tabs does not extend it.", "There is no extra speed bonus in the scoring rules. Use the available time to check that your answer fits, then submit. Passing and timing out both score zero."], links: [{ label: "Read all game rules", href: "/game-rules/" }] },
+      { heading: "4. Stay focused in the final Crowd 100 rounds", paragraphs: ["Rounds 9 and 10 multiply base points by four. A rank #1 answer is worth 400 points there, compared with 100 in the opening rounds. A weak start does not prevent a useful recovery in the later rounds.", "There is no resource to save for those rounds: you still get one answer per prompt. Give every question your best guess and use the reveal breaks to reset your attention."] },
+      { heading: "5. Learn from the reveal, then practice", paragraphs: ["The timer pauses while the answer board is visible. Compare your response with the top five and notice whether your guess was too specific, outside the category, or simply absent from the curated list. A zero does not prove that your answer is factually wrong.", "Replay the daily challenge to practice without changing the day's recorded result. Use Unlimited for a longer session. In Sky Climb Endless, a recognized answer avoids losing a balloon, while a rank #1 answer restores all three."], links: [{ label: "Play the daily challenge", href: "/daily/" }, { label: "Explore Sky Climb", href: "/modes/sky-climb/" }] }
+    ]
+  },
+  {
+    path: "/games-like-noillirk/",
+    title: "Games Like Noillirk – Category & Word Game Alternatives",
+    description: "Compare Noillirk with Connections and Categories online. Find word games for category discovery, unique answers, or a faster Noillirk mode.",
+    heading: "Games like Noillirk",
+    intro: "If you enjoy Noillirk's word prompts, the next game to try depends on what you enjoy most: finding categories, thinking of words quickly, or comparing answers with friends. These alternatives share parts of that experience but use different goals and scoring.",
+    mode: "crowd",
+    sections: [
+      { heading: "Connections: discover the hidden categories", paragraphs: ["The New York Times' Connections presents 16 words. You find four groups of four words that share a theme. It suits players who enjoy recognizing links between words and reconsidering an answer that could fit more than one category.", "In Noillirk you generate an answer to a given prompt; in Connections you organize words already on the board. Choose it when you want category deduction instead of guessing which response ranks highest."], links: [{ label: "Play Connections", href: "https://www.nytimes.com/games/connections" }, { label: "Connections rules from The New York Times", href: "https://thenewyorktimeshelpcenter.helpjuice.com/360011158491-New-York-Times-Games/28525912587924-Connections" }] },
+      { heading: "Categories online: find a unique word for each category", paragraphs: ["Categories at scattergoriesonline.net asks you to fill categories with words beginning with a chosen letter. Its published online rules award points for unique answers and no points when another player gives the same word. Rooms support playing with friends.", "This changes the strategy: Noillirk rewards high-ranked common answers, while Categories encourages you to find valid words that other players are less likely to choose. Try it if you enjoy typing your own responses and comparing them with a group."], links: [{ label: "Play Categories online", href: "https://scattergoriesonline.net/" }, { label: "Read Categories online rules", href: "https://scattergoriesonline.net/rules.xhtml" }] },
+      { heading: "Sky Climb: a faster mode on this site", paragraphs: ["If you want the same answer-guessing mechanic with a different pace, Sky Climb is another mode of this fan-made Noillirk edition. Classic has seven prompts, 15 seconds per answer, and an altitude score. It is not a separate external game.", "Endless adds three balloons and a maximum of 30 prompts. A pass, timeout, or unrecognized answer costs a balloon; a top-ranked answer refills them. Choose this mode if shorter decisions and a survival element appeal to you."], links: [{ label: "Explore Sky Climb Classic and Endless", href: "/modes/sky-climb/" }] },
+      { heading: "Which should you try first?", paragraphs: ["Choose Connections for finding hidden relationships among supplied words. Choose Categories online for creating unique answers under a letter constraint with other players. Stay with Noillirk daily if you want a short, repeatable routine centered on common answers.", "The external games are operated by their respective publishers. This comparison does not imply a partnership or shared account, score, or daily puzzle."], links: [{ label: "Return to Noillirk daily", href: "/daily/" }] }
+    ]
+  },
   {
     path: "/how-to-play/",
     title: "How to Play Noillirk – Beginner's Guide",
@@ -24,10 +67,10 @@ export const contentPages: ContentPageData[] = [
     ]
   },
   {
-    path: "/rules/",
-    title: "Noillirk Rules – Scoring, Timers & Answer Matching",
+    path: "/game-rules/",
+    title: "Noillirk Game Rules – Scoring, Timers & Answer Matching",
     description: "Understand Noillirk scoring rules, Crowd 100 multipliers, Sky Climb ranks, time limits, and what happens when an answer is not recognized.",
-    heading: "Noillirk rules and scoring",
+    heading: "Noillirk game rules and scoring",
     intro: "Each prompt accepts one submitted answer. Higher-ranked answers earn more points. These rules describe this fan-made edition of Noillirk; other versions may use different answer lists or scoring.",
     mode: "crowd",
     sections: [
@@ -68,5 +111,6 @@ export const contentPages: ContentPageData[] = [
 ];
 
 export function findContentPage(path: string) {
-  return contentPages.find((page) => page.path === `${path.replace(/\/+$/, "")}/`);
+  const normalized = `${path.replace(/\/+$/, "")}/`;
+  return contentPages.find((page) => page.path === (normalized === "/rules/" ? "/game-rules/" : normalized));
 }
