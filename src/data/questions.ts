@@ -183,6 +183,7 @@ export const questions: Question[] = [
   },
   {
     id: "board-game",
+    aliases: { "Clue": ["Cluedo"], "Catan": ["Settlers of Catan", "The Settlers of Catan"], "Checkers": ["Draughts"] },
     category: "Games",
     prompt: "Name a board game.",
     answers: [
@@ -382,6 +383,7 @@ export const questions: Question[] = [
   },
   {
     id: "dog-breed",
+    aliases: { "Labrador": ["Lab", "Labrador Retriever"], "Golden Retriever": ["Golden"], "German Shepherd": ["Alsatian", "GSD"] },
     category: "Animals",
     prompt: "Name a dog breed.",
     answers: [

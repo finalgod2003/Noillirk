@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import type { GameConfig } from "../types";
 import { loadRecord } from "../lib/game";
+import { currentStreak } from "../lib/retention";
+import { Challenges } from "./Challenges";
 
 function ModeStat({ value, label }: { value: string; label: string }) {
   return (
@@ -56,10 +58,12 @@ function CrowdDial() {
 
 export function Home({
   onStart,
-  onOpenRoom
+  onOpenRoom,
+  onRecords = () => {}
 }: {
   onStart: (config: GameConfig) => void;
   onOpenRoom: () => void;
+  onRecords?: () => void;
 }) {
   const [copied, setCopied] = useState(false);
   const crowdRecord = loadRecord("crowd", "daily");
@@ -93,9 +97,15 @@ export function Home({
           <strong>NOI / 01</strong>
         </div>
         <nav className="header-nav" aria-label="Primary navigation">
-          <a href="#play">Play</a>
-          <a href="#guide">Guide</a>
-          <a href="#rules">Rules</a>
+          <button
+            className="nav-play"
+            onClick={() => onStart({ mode: "crowd", variant: "daily" })}
+          >
+            Play Now
+          </button>
+          <a href="/how-to-play/">Guide</a>
+          <a href="#challenges">Challenges</a>
+          <a href="/rules/">Rules</a>
           <button className="nav-room" onClick={onOpenRoom}>
             <Radio size={14} />
             Room
@@ -108,7 +118,7 @@ export function Home({
           <div className="hero-copy">
             <motion.div
               className="eyebrow"
-              initial={{ opacity: 0, y: 12 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
             >
@@ -116,7 +126,7 @@ export function Home({
               Free browser game · Fan-made edition
             </motion.div>
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.08 }}
             >
@@ -125,26 +135,19 @@ export function Home({
             </motion.h1>
             <motion.p
               className="hero-lede"
-              initial={{ opacity: 0, y: 18 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.16 }}
             >
-              Noillirk is a free browser game with two modes. In Crowd 100, answer 10 prompts
-              in 30 seconds each and guess the most popular response. In Sky Climb, answer 7
-              prompts in 15 seconds each and turn each ranking into up to 7,000 m of altitude.
-              No sign-up, app, or download.
+              Guess the most popular answer. Play Crowd 100 free online: 10 prompts,
+              30 seconds each. No sign-up or download.
             </motion.p>
-            <motion.div
-              className="hero-actions"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.24 }}
-            >
+            <div className="hero-actions">
               <button
                 className="primary-button"
                 onClick={() => onStart({ mode: "crowd", variant: "daily" })}
               >
-                Play Noillirk free
+                Play Now
                 <ArrowRight size={18} />
               </button>
               <button
@@ -154,7 +157,7 @@ export function Home({
                 Try Sky Climb · 7 prompts
                 <ArrowUpRight size={17} />
               </button>
-            </motion.div>
+            </div>
             <div className="hero-meta">
               <span>No sign-up</span>
               <span>3–5 min</span>
@@ -163,7 +166,7 @@ export function Home({
           </div>
           <motion.div
             className="hero-visual"
-            initial={{ opacity: 0, scale: 0.94, rotate: -2 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
@@ -211,6 +214,8 @@ export function Home({
           </div>
         </div>
 
+        <Challenges onStart={onStart} onRecords={onRecords} />
+
         <section className="mode-section" id="play">
           <div className="section-heading">
             <div>
@@ -223,7 +228,7 @@ export function Home({
           <div className="mode-grid">
             <motion.article
               className="mode-card mode-crowd"
-              initial={{ opacity: 0, y: 24 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.55 }}
@@ -239,10 +244,10 @@ export function Home({
                 <span className="mode-index">A / 01</span>
               </div>
               <div className="mode-copy">
-                <h3>Crowd 100</h3>
+                <h3><a href="/modes/crowd-100/">Crowd 100</a></h3>
                 <p>
                   Type the answer you think most people would give across 10 prompts with 30
-                  seconds each. Every match pulls 25 people toward your tile; rounds 3–5 double,
+                  seconds each. Every 25 points pulls one person toward your tile; rounds 3–5 double,
                   6–8 triple, and 9–10 quadruple your points.
                 </p>
               </div>
@@ -268,13 +273,13 @@ export function Home({
               </div>
               <span className="record-line">
                 {crowdRecord.best ? `Your best: ${crowdRecord.best.toLocaleString()} pts` : "No table record yet"}
-                {crowdRecord.streak > 0 ? ` · ${crowdRecord.streak} day streak` : ""}
+                {currentStreak(crowdRecord) > 0 ? ` · ${currentStreak(crowdRecord)} day streak` : ""}
               </span>
             </motion.article>
 
             <motion.article
               className="mode-card mode-climb"
-              initial={{ opacity: 0, y: 24 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.55, delay: 0.08 }}
@@ -290,7 +295,7 @@ export function Home({
                 <span className="mode-index">B / 02</span>
               </div>
               <div className="mode-copy">
-                <h3>Sky Climb</h3>
+                <h3><a href="/modes/sky-climb/">Sky Climb</a></h3>
                 <p>
                   Rank an answer in six tiers across 7 prompts with 15 seconds each. One point
                   equals 10 metres, up to 100 points per prompt. Endless mode gives you three
@@ -327,7 +332,7 @@ export function Home({
 
           <motion.div
             className="room-banner"
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
@@ -561,7 +566,8 @@ export function Home({
                 <span><strong>75</strong>runner-up</span>
                 <span><strong>50</strong>top five</span>
                 <span><strong>25</strong>top ten</span>
-                <span><strong>10</strong>off the board</span>
+                <span><strong>10</strong>other accepted</span>
+                <span><strong>0</strong>unrecognized / pass / timeout</span>
               </div>
               <p>
                 Questions 3–5 double. 6–8 triple. 9–10 quadruple. Every 25 points pulls one
@@ -579,6 +585,7 @@ export function Home({
                 <span><strong>32</strong>cloud nine</span>
                 <span><strong>16</strong>kite</span>
                 <span><strong>8 / 4</strong>treetop / grounded</span>
+                <span><strong>0</strong>unrecognized / pass / timeout</span>
               </div>
               <p>
                 One point is 10 metres. A perfect seven-round climb peaking at 100 points per
@@ -608,8 +615,11 @@ export function Home({
         </div>
         <div className="footer-links">
           <a href="#play">Play</a>
-          <a href="#guide">Guide</a>
-          <a href="#rules">Rules</a>
+          <a href="/how-to-play/">How to play</a>
+          <a href="/rules/">Rules</a>
+          <a href="/modes/crowd-100/">Crowd 100</a>
+          <a href="/modes/sky-climb/">Sky Climb</a>
+          <button onClick={onRecords}>My records</button>
           <a href="https://playdaily.org/noillirk" target="_blank" rel="noreferrer">
             Original game
           </a>

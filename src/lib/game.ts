@@ -5,6 +5,8 @@ const crowdMultipliers = [1, 1, 2, 2, 2, 3, 3, 3, 4, 4];
 
 export function normalizeAnswer(value: string): string {
   return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/&/g, " and ")
     .replace(/['’]/g, "")
@@ -37,31 +39,34 @@ export function findRank(question: Question, value: string): number {
   const normalized = normalizeAnswer(value);
   if (!normalized) return 0;
 
-  const exactIndex = question.answers.findIndex((answer) => normalizeAnswer(answer) === normalized);
-  if (exactIndex >= 0) return exactIndex + 1;
+  const candidates = [...question.answers, ...(question.extraAccepted ?? [])].flatMap((answer, index) =>
+    [answer, ...(question.aliases?.[answer] ?? [])].map((label) => ({
+      value: normalizeAnswer(label),
+      rank: index < question.answers.length ? index + 1 : 13
+    }))
+  );
+  // Exact answers (including extra accepted answers) always take priority over typos.
+  const exact = candidates.find((candidate) => candidate.value === normalized);
+  if (exact) return exact.rank;
 
-  const aliasIndex = question.answers.findIndex((answer) => {
-    const candidate = normalizeAnswer(answer);
-    return candidate.length >= 5 && normalized.length >= 5 && editDistance(candidate, normalized) <= 1;
-  });
-  if (aliasIndex >= 0) return aliasIndex + 1;
+  const withoutArticle = (answer: string) => answer.replace(/^(?:a|an|the) /, "");
+  const singular = (answer: string) =>
+    answer.length > 3 && /s$/.test(answer) && !/(ss|us|is)$/.test(answer)
+      ? answer.slice(0, -1)
+      : answer;
+  const comparable = (answer: string) => singular(withoutArticle(answer));
+  const uniqueRank = (ranks: number[]) => new Set(ranks).size === 1 ? ranks[0] : 0;
+  const variants = candidates.filter((candidate) => comparable(candidate.value) === comparable(normalized));
+  if (variants.length) return uniqueRank(variants.map((candidate) => candidate.rank));
 
-  const containedIndex = question.answers.findIndex((answer) => {
-    const candidate = normalizeAnswer(answer);
-    return candidate.length >= 5 && (normalized.includes(candidate) || candidate.includes(normalized));
-  });
-  if (containedIndex >= 0) return containedIndex + 1;
-
-  const extraIndex = (question.extraAccepted ?? []).findIndex((answer) => {
-    const candidate = normalizeAnswer(answer);
-    return candidate === normalized || (candidate.length >= 5 && editDistance(candidate, normalized) <= 1);
-  });
-  if (extraIndex >= 0) return 13;
-
-  return 0;
+  const typos = candidates.filter((candidate) =>
+    candidate.value.length >= 5 && normalized.length >= 5 && editDistance(candidate.value, normalized) <= 1
+  );
+  return uniqueRank(typos.map((candidate) => candidate.rank));
 }
 
 export function crowdBaseForRank(rank: number): number {
+  if (rank <= 0) return 0;
   if (rank === 1) return 100;
   if (rank <= 3) return 75;
   if (rank <= 5) return 50;
@@ -70,6 +75,7 @@ export function crowdBaseForRank(rank: number): number {
 }
 
 export function climbBaseForRank(rank: number): number {
+  if (rank <= 0) return 0;
   if (rank === 1) return 100;
   if (rank <= 4) return 64;
   if (rank <= 9) return 32;
@@ -93,6 +99,8 @@ export function scoreRound(
     questionId: question.id,
     prompt: question.prompt,
     answer: answer.trim(),
+    matchedAnswer: rank > 0 && rank <= question.answers.length ? question.answers[rank - 1] : undefined,
+    outcome: rank > 0 ? "matched" : "unrecognized",
     rank: rank || 0,
     base,
     multiplier,
@@ -140,9 +148,10 @@ function mulberry32(seed: number) {
   };
 }
 
-export function pickQuestions(count: number, seed: string): Question[] {
+export function pickQuestions(count: number, seed: string, bank: Question[] = questions): Question[] {
+  if (count > 0 && bank.length === 0) throw new Error("Question bank is empty");
   const random = mulberry32(hashString(seed));
-  const pool = [...questions];
+  const pool = [...bank];
   for (let i = pool.length - 1; i > 0; i -= 1) {
     const j = Math.floor(random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -151,7 +160,7 @@ export function pickQuestions(count: number, seed: string): Question[] {
   while (chosen.length < count) {
     const next = pool.shift();
     if (!next) {
-      pool.push(...questions);
+      pool.push(...bank);
       continue;
     }
     chosen.push(next);
@@ -168,8 +177,7 @@ export function configForVariant(variant: Variant): { rounds: number; seconds: n
   return { rounds: 7, seconds: 15 };
 }
 
-export function formatAltitude(points: number): string {
-  const metres = points * 10;
+export function formatAltitude(metres: number): string {
   if (metres >= 1000) return `${(metres / 1000).toFixed(1)} km`;
   return `${metres} m`;
 }

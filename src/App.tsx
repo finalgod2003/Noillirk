@@ -1,31 +1,44 @@
 import { useEffect, useState } from "react";
 import type { GameConfig, GameSummary, RoundResult } from "./types";
-import { getDailyKey, saveRecord } from "./lib/game";
+import { completeRun, configFromSearch, prepareGame } from "./lib/retention";
+import { Records } from "./components/Records";
 import { Home } from "./components/Home";
 import { GameScreen } from "./components/GameScreen";
 import { SummaryScreen } from "./components/SummaryScreen";
 import { Multiplayer } from "./components/Multiplayer";
+import { ContentPage } from "./components/ContentPage";
+import { findContentPage } from "./data/pages";
 
 type View =
   | { name: "home" }
   | { name: "game"; config: GameConfig }
-  | { name: "summary"; config: GameConfig; summary: GameSummary; results: RoundResult[] }
+  | { name: "summary"; config: GameConfig; summary: GameSummary; results: RoundResult[]; saved: boolean }
+  | { name: "records" }
   | { name: "room" };
 
 export default function App() {
-  const [view, setView] = useState<View>({ name: "home" });
+  const page = findContentPage(window.location.pathname);
+  const [view, setView] = useState<View>(() => {
+    const config = configFromSearch(window.location.search);
+    if (!page && config) return { name: "game", config };
+    return { name: "home" };
+  });
+
+  useEffect(() => {
+    if (page) document.title = page.title;
+  }, [page]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [view.name]);
 
   const start = (config: GameConfig) => {
-    setView({ name: "game", config });
+    setView({ name: "game", config: prepareGame(config) });
   };
 
   const finish = (config: GameConfig, summary: GameSummary, results: RoundResult[]) => {
-    saveRecord(config.mode, config.variant, summary.score, getDailyKey());
-    setView({ name: "summary", config, summary, results });
+    const savedRun = completeRun(config, summary);
+    setView({ name: "summary", config: savedRun.config, summary, results, saved: savedRun.saved });
   };
 
   if (view.name === "game") {
@@ -44,10 +57,12 @@ export default function App() {
         summary={view.summary}
         results={view.results}
         config={view.config}
+        saved={view.saved}
+        onRecords={() => setView({ name: "records" })}
         onReplay={() =>
           start({
             ...view.config,
-            seed: `${view.config.mode}-${view.config.variant}-${Date.now()}`
+            practice: view.config.variant === "daily"
           })
         }
         onHome={() => setView({ name: "home" })}
@@ -64,6 +79,8 @@ export default function App() {
   if (view.name === "room") {
     return <Multiplayer onBack={() => setView({ name: "home" })} />;
   }
+  if (view.name === "records") return <Records onHome={() => setView({ name: "home" })} onStart={start} />;
 
-  return <Home onStart={start} onOpenRoom={() => setView({ name: "room" })} />;
+  if (page) return <ContentPage page={page} />;
+  return <Home onStart={start} onOpenRoom={() => setView({ name: "room" })} onRecords={() => setView({ name: "records" })} />;
 }

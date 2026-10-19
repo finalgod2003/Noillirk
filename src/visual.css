@@ -94,6 +94,165 @@ a {
   outline-offset: 3px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.answer-error {
+  margin: 12px 0 0;
+  color: var(--orange-soft);
+  font-size: 14px;
+}
+
+.result-detail {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.content-page {
+  width: min(820px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 36px 0 64px;
+}
+
+.content-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.content-page h1 {
+  margin: 32px 0 20px;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  color: var(--acid);
+}
+
+.content-page p {
+  color: var(--muted-strong);
+  line-height: 1.8;
+}
+
+.content-page .content-intro {
+  margin-bottom: 26px;
+  font-size: 19px;
+}
+
+.content-page article section,
+.content-related {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.content-page h2 {
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  line-height: 1.3;
+}
+
+.content-related a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  color: var(--acid);
+}
+
+.content-related a:hover,
+.content-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.challenges-section {
+  width: min(1380px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 64px 0 16px;
+}
+
+.retention-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.retention-heading h2 {
+  margin: 10px 0 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.1;
+}
+
+.retention-heading p,
+.daily-card p,
+.theme-card p,
+.retention-note {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.daily-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(20px, 3vw, 36px);
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--acid);
+  background: var(--panel);
+}
+
+.daily-card h3 { margin: 12px 0; font-size: 25px; }
+.daily-card > div { max-width: 720px; }
+.daily-card .primary-button { flex-shrink: 0; }
+.daily-status { display: flex; flex-wrap: wrap; gap: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--acid); }
+.theme-heading { margin-top: 48px; }
+.theme-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.theme-card { display: flex; flex-direction: column; align-items: flex-start; padding: 28px; border: 1px solid var(--line); border-top: 3px solid var(--orange); background: var(--panel); }
+.theme-outdoors { border-top-color: var(--mint); }
+.theme-everyday { border-top-color: var(--sky); }
+.theme-card h3 { font-size: 27px; margin: 18px 0 0; }
+.theme-card .record-line { margin: auto 0 18px; padding-top: 14px; }
+.theme-card .mode-play { width: 100%; margin-top: 0; font-size: 14px; }
+.retention-note { font-size: 12px; }
+.records-page { width: min(1000px, calc(100% - 36px)); }
+.records-themes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.records-themes > div { display: grid; gap: 12px; padding: 20px; border: 1px solid var(--line); }
+.records-themes strong { color: var(--acid); }
+.run-history { list-style: none; padding: 0; }
+.run-history li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 24px; align-items: center; padding: 22px 0; border-top: 1px solid var(--line); }
+.run-history li > div { display: grid; gap: 8px; }
+.run-history time, .run-history li > div > span { color: var(--muted); font-size: 13px; }
+.game-challenge-label { color: var(--muted); font-family: var(--font-mono); font-size: 12px; line-height: 1.6; }
+.summary-share-card .share-result-text { white-space: pre-line; line-height: 1.6; overflow-wrap: anywhere; }
+.share-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding: 16px 24px; }
+.share-tools > span { color: var(--muted); font-size: 12px; }
+.share-tools details { width: 100%; }
+.share-tools summary { cursor: pointer; padding: 8px 0; }
+.share-tools textarea { display: block; width: 100%; min-height: 160px; padding: 14px; margin-top: 12px; background: var(--ink); color: var(--paper); border: 1px solid var(--line-strong); font: inherit; resize: vertical; }
+.save-status { margin: 0; padding: 0 24px 20px; color: var(--muted); line-height: 1.6; font-size: 13px; }
+
+@media (max-width: 760px) {
+  .challenges-section { width: calc(100% - 28px); padding-top: 40px; }
+  .retention-heading, .daily-card { flex-direction: column; align-items: flex-start; }
+  .daily-card .primary-button { width: 100%; }
+  .theme-grid, .records-themes { grid-template-columns: 1fr; }
+  .run-history li { grid-template-columns: minmax(0, 1fr) auto; gap: 14px; }
+  .run-history li .text-button { grid-column: 1 / -1; width: fit-content; }
+}
+
 .home-page {
   position: relative;
   min-height: 100vh;
@@ -251,6 +410,7 @@ a {
   transform-origin: left;
 }
 
+.nav-play,
 .nav-room {
   display: inline-flex;
   align-items: center;
@@ -273,6 +433,13 @@ a {
     transform 160ms ease;
 }
 
+.nav-room {
+  border-color: var(--line-strong);
+  color: var(--paper);
+  background: transparent;
+}
+
+.nav-play:hover,
 .nav-room:hover {
   color: var(--paper);
   background: var(--orange);
@@ -283,12 +450,12 @@ a {
 .hero {
   width: min(1380px, calc(100% - 48px));
   margin: 0 auto;
-  min-height: 760px;
+  min-height: 640px;
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(440px, 0.98fr);
   align-items: center;
   gap: clamp(34px, 5vw, 76px);
-  padding: 64px 0 82px;
+  padding: 44px 0 56px;
 }
 
 .hero-copy {
@@ -3514,6 +3681,7 @@ a {
 
   .site-header {
     height: 68px;
+    gap: 12px;
   }
 
   .brand-suffix {
@@ -3521,16 +3689,17 @@ a {
   }
 
   .header-nav {
-    gap: 13px;
+    gap: 8px;
   }
 
   .header-nav a {
     display: none;
   }
 
+  .nav-play,
   .nav-room {
-    min-height: 36px;
-    padding: 0 12px;
+    min-height: 44px;
+    padding: 0 10px;
   }
 
   .hero {

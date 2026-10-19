@@ -8,6 +8,7 @@ export interface Question {
   prompt: string;
   answers: string[];
   extraAccepted?: string[];
+  aliases?: Record<string, string[]>;
 }
 
 export interface GameConfig {
@@ -16,6 +17,9 @@ export interface GameConfig {
   seed?: string;
   roomCode?: string;
   playerName?: string;
+  dailyKey?: string;
+  practice?: boolean;
+  theme?: string;
 }
 
 export interface RoundResult {
@@ -28,6 +32,8 @@ export interface RoundResult {
   points: number;
   crowdJoined: number;
   topAnswers: string[];
+  matchedAnswer?: string;
+  outcome?: "matched" | "unrecognized" | "passed" | "timeout";
 }
 
 export interface GameSummary {
