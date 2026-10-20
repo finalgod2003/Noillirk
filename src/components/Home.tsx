@@ -526,6 +526,26 @@ export function Home({
             {copied ? "Copied" : "Share site"}
           </button>
         </div>
+        <div className="footer-badges">
+          <a href="https://findly.tools/noillirk?utm_source=noillirk" target="_blank" rel="noopener noreferrer">
+            <img src="https://findly.tools/badges/findly-tools-badge-light.svg" alt="Featured on Findly.tools" width="175" height="55" loading="lazy" />
+          </a>
+          <a href="https://twelve.tools" target="_blank" rel="noopener noreferrer">
+            <img src="https://twelve.tools/badge1-light.svg" alt="Featured on Twelve Tools" width="148" height="40" loading="lazy" />
+          </a>
+          <a href="https://www.foundrlist.com/product/noillirk?utm_source=badge&amp;utm_medium=embed" target="_blank" rel="noopener noreferrer">
+            <img src="https://www.foundrlist.com/api/badge/noillirk" alt="Featured on FoundrList" width="150" height="48" loading="lazy" />
+          </a>
+          <a href="https://fastlaunch.io" target="_blank" rel="noopener noreferrer">
+            <img src="https://fastlaunch.io/images/badges/featured-light.svg" alt="Featured on FastLaunch" width="221" height="60" loading="lazy" />
+          </a>
+          <a href="https://deeplaunch.io" target="_blank" rel="noopener noreferrer">
+            <img src="https://deeplaunch.io/badge/badge_light.svg" alt="Featured on DeepLaunch.io" width="200" height="54" loading="lazy" />
+          </a>
+          <a href="https://launchigniter.com/product/noillirk?ref=badge-noillirk" target="_blank" rel="noopener noreferrer">
+            <img src="https://launchigniter.com/api/badge/noillirk?theme=light" alt="Featured on LaunchIgniter" width="212" height="55" loading="lazy" />
+          </a>
+        </div>
       </footer>
     </div>
   );
